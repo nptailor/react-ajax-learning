@@ -1,30 +1,32 @@
 import React, { Component } from 'react';
 import './Blog.css';
 import Posts from '../Posts/Posts';
-import {Route,NavLink} from 'react-router-dom';
+import { Route, NavLink, Switch,Redirect } from 'react-router-dom';
 import NewPost from '../NewPost/NewPost';
 
-// import FullPost from '../../components/FullPost/FullPost';
 // import Post from '../../components/Post/Post';
 // import axios from 'axios';
 
 
 class Blog extends Component {
+    state = {
+        auth: false
+    }
 
     render() {
         return (
             <div>
-                <header  className="Blog">
+                <header className="Blog">
                     <nav>
                         <ul>
-                            <li><NavLink 
-                            to="/" 
-                            exact
-                            activeClassName="active"
-                            activeStyle={{
-                                color: 'orange',
-                                textDecoration: 'underline'
-                            }}>Home</NavLink></li>
+                            <li><NavLink
+                                to="/posts"
+                                exact
+                                activeClassName="active"
+                                activeStyle={{
+                                    color: 'orange',
+                                    textDecoration: 'underline'
+                                }}>Posts</NavLink></li>
                             <li><NavLink to={{
                                 pathname: 'new-posts',
                                 hash: '#submit',
@@ -33,11 +35,15 @@ class Blog extends Component {
                         </ul>
                     </nav>
                 </header>
-               {/*  <Route path='/' exact render={()=><h1>Home</h1>}/>
+                {/*  <Route path='/' exact render={()=><h1>Home</h1>}/>
                 <Route path='/' render={()=><h1>Home 2</h1>}/> */}
-                <Route path='/' exact component={Posts}/>
-                <Route path='/new-posts' component={NewPost}/>
-
+                <Switch>
+                    {/* {this.state.auth?<Route path='/new-posts' component={NewPost} />:null}  if you want to only render of authenticated */}
+                    <Route path='/new-posts' component={NewPost}/>
+                    <Route path='/posts' component={Posts} />
+                    <Route render={()=><h1>Page Not Found</h1>}/>  {/*for 404 error*/}
+                    <Redirect from='/' to='/posts'/>
+                </Switch>
 
                 {/* <section>
                     <FullPost id={this.state.selectedPostId} />
